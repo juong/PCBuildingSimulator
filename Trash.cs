@@ -14,7 +14,7 @@ public class Trash : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "part" || other.gameObject.tag == "tool")
+        if (other.gameObject.tag == "item" || other.gameObject.tag == "tool")
         {
             Destroy(other.gameObject);
         }
