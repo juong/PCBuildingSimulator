@@ -42,29 +42,33 @@ public class Grab : MonoBehaviour {
 
     private void pickup()
     {
-        if (!item)
-            return;
-        //Set the object parent to the guide empty object.
-        item.transform.SetParent(guide);
-        //Set gravity to false while holding item
-        item.GetComponent<Rigidbody>().useGravity = false;
-        //Apply the same rotation the main object has.
-        item.transform.localRotation = transform.rotation;
-        //Re-position the ball on the guide object 
-        item.transform.position = guide.position;
-        handFree = false;
+        if (item)
+        {
+            item.GetComponent<Collider>().enabled = false;
+            //Set the object parent to the guide empty object.
+            item.transform.SetParent(guide);
+            //Set gravity to false while holding item
+            item.GetComponent<Rigidbody>().useGravity = false;
+            //Apply the same rotation the main object has.
+            item.transform.localRotation = transform.rotation;
+            //Re-position the ball on the guide object 
+            item.transform.position = guide.position;
+            handFree = false;
+        }
     }
 
     private void drop()
     {
-        if (!item)
-            return;
-        //Set the Gravity to true again.
-        item.GetComponent<Rigidbody>().useGravity = true;
-        //Item is now no longer useful
-        item = null;
-        //Unparent our ball
-        guide.GetChild(0).parent = null;
-        handFree = true;
+        if (item)
+        {
+            item.GetComponent<Collider>().enabled = true;
+            //Set the Gravity to true again.
+            item.GetComponent<Rigidbody>().useGravity = true;
+            //Item is now no longer useful
+            item = null;
+            //Unparent our ball
+            guide.GetChild(0).parent = null;
+            handFree = true;
+        }
     }
 }
