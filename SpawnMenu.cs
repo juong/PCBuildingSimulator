@@ -3,29 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour {
+public class SpawnMenu : MonoBehaviour {
 
 	public static bool SimulationIsPaused = false;
-	
-	public GameObject pauseMenuUI;
-	
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			if ( SimulationIsPaused )
-			{
-				Resume();
-			} else
-			{
-				Pause();
-			}
-		}
-	}
+	public GameObject playerMenuUI;
+	public GameObject spawnMenuUI;
+	public Spawn spawner;
 	
 	public void Resume()
 	{
-		pauseMenuUI.SetActive(false); 
+		spawnMenuUI.SetActive(false); 
 		Time.timeScale = 1f;
 		SimulationIsPaused = false;
 		Cursor.lockState = CursorLockMode.Locked;
@@ -34,20 +21,18 @@ public class PauseMenu : MonoBehaviour {
 	
 	void Pause()
 	{
-		pauseMenuUI.SetActive(true);
+		spawnMenuUI.SetActive(true);
 		Time.timeScale = 0f;
 		SimulationIsPaused = true;
+		
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 	}
 	
-	public void LoadMenu()
+	public void Spawn()
 	{
-		SceneManager.LoadScene("Menu");
-	}
-	
-	public void QuitSimulation()
-	{
-		Application.Quit();
+		spawner.SpawnPart();
+		playerMenuUI.SetActive(true);
+		spawnMenuUI.SetActive(false);
 	}
 }

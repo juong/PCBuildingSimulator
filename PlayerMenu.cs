@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour {
+public class PlayerMenu : MonoBehaviour {
 
 	public static bool SimulationIsPaused = false;
 	
-	public GameObject pauseMenuUI;
+	public GameObject playerMenuUI;
+	public GameObject spawnMenuUI;
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown(KeyCode.Escape))
+		if (Input.GetKeyDown(KeyCode.M))
 		{
 			if ( SimulationIsPaused )
 			{
@@ -25,7 +26,7 @@ public class PauseMenu : MonoBehaviour {
 	
 	public void Resume()
 	{
-		pauseMenuUI.SetActive(false); 
+		playerMenuUI.SetActive(false); 
 		Time.timeScale = 1f;
 		SimulationIsPaused = false;
 		Cursor.lockState = CursorLockMode.Locked;
@@ -34,20 +35,16 @@ public class PauseMenu : MonoBehaviour {
 	
 	void Pause()
 	{
-		pauseMenuUI.SetActive(true);
+		playerMenuUI.SetActive(true);
 		Time.timeScale = 0f;
 		SimulationIsPaused = true;
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 	}
 	
-	public void LoadMenu()
+	public void Spawn()
 	{
-		SceneManager.LoadScene("Menu");
-	}
-	
-	public void QuitSimulation()
-	{
-		Application.Quit();
+		spawnMenuUI.SetActive(true); 
+		playerMenuUI.SetActive(false);
 	}
 }
