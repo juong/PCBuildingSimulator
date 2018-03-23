@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grab : MonoBehaviour {
+public class Grab : MonoBehaviour
+{
     public bool handFree = true;
     public GameObject item;
     public Transform guide;
@@ -11,7 +12,7 @@ public class Grab : MonoBehaviour {
 
     public float distance;
     float maxdist;
-    
+
     private GameObject placedItem; //only used if there we are pulling an item off
 
     void OnTriggerEnter(Collider col)
@@ -30,11 +31,13 @@ public class Grab : MonoBehaviour {
         }
     }
 
-    void Start () {
-        
+    void Start()
+    {
+
     }
-	
-	void Update () {
+
+    void Update()
+    {
         if (item && (item.name.StartsWith("mb") || item.name.StartsWith("hdd") || item.name.StartsWith("per") || item.name.StartsWith("psu")))
             maxdist = 0.6f;
         else
@@ -50,9 +53,10 @@ public class Grab : MonoBehaviour {
                 pickup();
         }
 
-        if (!handFree && item) {
+        if (!handFree && item)
+        {
             item.transform.position = guide.position;
-            if(!item.GetComponent<PartProperties>().isMB)
+            if (!item.GetComponent<PartProperties>().isMB)
                 distance = Vector3.Distance(item.transform.position, item.GetComponent<PartProperties>().target.transform.position);
         }
     }
@@ -64,8 +68,8 @@ public class Grab : MonoBehaviour {
             if (item.GetComponent<PartProperties>().placed)
             {
                 placedItem = item;
-                item.GetComponent<PartProperties>().duplicate();
-                item = item.GetComponent<PartProperties>().dupe;
+                item = Instantiate(item.GetComponent<PartProperties>().dupe);
+                placedItem.SetActive(false);
             }
             item.GetComponent<Collider>().isTrigger = true;
             //Set the object parent to the guide empty object.
@@ -118,9 +122,9 @@ public class Grab : MonoBehaviour {
         bool targetFound = false;
         if (type.StartsWith("r"))
         {
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                if(!MB.transform.GetChild(1).GetChild(i + 4).gameObject.activeSelf && !targetFound)
+                if (!MB.transform.GetChild(1).GetChild(i + 4).gameObject.activeSelf && !targetFound)
                 {
                     item.GetComponent<PartProperties>().target = MB.transform.GetChild(1).GetChild(i + 4).gameObject;
                     targetFound = true;
@@ -139,9 +143,4 @@ public class Grab : MonoBehaviour {
             }
         }
     }
-
-    /*TBA
-     * add ref to mb
-     * query when special parts are added
-     */
 }

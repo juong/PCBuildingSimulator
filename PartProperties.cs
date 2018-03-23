@@ -8,11 +8,18 @@ public class PartProperties : MonoBehaviour {
     public string partName;         //what kind of part is it? (cpu, cpuFan, vidCard, ram, periph, psu, or hdd)
     public string fitment;      //ATX, NLX, MINI-ATX, if none in particular put "ALL"
     public GameObject target;
-    public GameObject dupe;
     public bool dead = false;
     public string specs;
 
+    //do not show on GUI
+    public int index;
+    /*indexes are as follows:
+     * cpu = 1, cpufan = 2, ram = 3, vc = 4, mb = 5, psu = 6, per = 7, hdd = 8
+     */
+
     public bool placed = false;
+    public GameObject dupe;
+
     public bool isMB = false;
     //keeps track of which slots are taken
     //only used if isMB is true
@@ -30,15 +37,20 @@ public class PartProperties : MonoBehaviour {
     {
         if (this.tag == "MB")
             isMB = true;
-    }
-
-    public void duplicate()
-    {
-        if (!isMB)
+        if (!placed)
         {
-            dupe = Instantiate(this.gameObject);
-            dupe.GetComponent<PartProperties>().placed = false;
-            //this.gameObject.SetActive(false);
+            if (index == 5)
+            {
+                target = GameObject.FindGameObjectWithTag("case").transform.GetChild(0).gameObject;
+            }
+            else if (index < 5)
+            {
+                target = GameObject.Find("mb_atx").GetComponent<PartProperties>().target.transform.GetChild(0).GetChild(1).GetChild(index - 1).gameObject;
+            }
+            else
+            {
+                target = GameObject.FindGameObjectWithTag("case").transform.GetChild(index - 5).gameObject;
+            }
         }
     }
 
