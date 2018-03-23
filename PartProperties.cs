@@ -23,6 +23,7 @@ public class PartProperties : MonoBehaviour {
     public bool isMB = false;
     //keeps track of which slots are taken
     //only used if isMB is true
+    /*
     bool hasCPU = false;
     bool hasCPUFan = false;
     bool hasVidCard = false;
@@ -32,8 +33,8 @@ public class PartProperties : MonoBehaviour {
     bool hasPeriph = false;
     int RAMCount = 0;
     int VCCount = 0;
-
-    private void Start()
+    */
+    private void Awake()
     {
         if (this.tag == "MB")
             isMB = true;
@@ -45,7 +46,7 @@ public class PartProperties : MonoBehaviour {
             }
             else if (index < 5)
             {
-                target = GameObject.Find("mb_atx").GetComponent<PartProperties>().target.transform.GetChild(0).GetChild(1).GetChild(index - 1).gameObject;
+                target = GameObject.FindGameObjectWithTag("case").transform.GetChild(0).transform.GetChild(0).GetChild(1).GetChild(index - 1).gameObject;
             }
             else
             {

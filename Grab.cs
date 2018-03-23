@@ -12,12 +12,22 @@ public class Grab : MonoBehaviour
 
     public float distance;
     float maxdist;
+    bool mbEmpty;
 
     private GameObject placedItem; //only used if there we are pulling an item off
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.tag == "item" || col.gameObject.tag == "MB")
+        if(MB)
+            scanForParts();
+        if (col.gameObject.tag == "item" || (col.gameObject.tag == "MB" && mbEmpty))
+            if (!item)
+                item = col.gameObject;
+    }
+
+    void OnTriggerStay(Collider col)
+    {
+        if (col.gameObject.tag == "item")
             if (!item)
                 item = col.gameObject;
     }
@@ -53,6 +63,7 @@ public class Grab : MonoBehaviour
                 pickup();
         }
 
+
         if (!handFree && item)
         {
             item.transform.position = guide.position;
@@ -67,9 +78,14 @@ public class Grab : MonoBehaviour
         {
             if (item.GetComponent<PartProperties>().placed)
             {
+                if(item.tag == "MB")
+                {
+                    disconnectAll();
+                }
                 placedItem = item;
                 item = Instantiate(item.GetComponent<PartProperties>().dupe);
-                placedItem.SetActive(false);
+                //placedItem.SetActive(false);
+                item.GetComponent<PartProperties>().target.SetActive(false);
             }
             item.GetComponent<Collider>().isTrigger = true;
             //Set the object parent to the guide empty object.
@@ -107,7 +123,7 @@ public class Grab : MonoBehaviour
                 sort(item.name);
             }
             item.GetComponent<PartProperties>().target.SetActive(true);
-            if (item.name.StartsWith("mb"))
+            if (item.name.StartsWith("mb") && !MB)
             {
                 MB = item.GetComponent<PartProperties>().target.transform.GetChild(0).gameObject;
             }
@@ -143,4 +159,36 @@ public class Grab : MonoBehaviour
             }
         }
     }
+
+
+    private void disconnectAll()
+    {
+        for (int i = 0; i < MB.transform.childCount; i++)
+        {
+            if (MB.transform.GetChild(1).GetChild(i).gameObject.activeSelf && MB.transform.GetChild(1).GetChild(i).gameObject.tag == "item")
+            {
+                placedItem = MB.transform.GetChild(1).GetChild(i).gameObject;
+                item = Instantiate(placedItem.GetComponent<PartProperties>().dupe, new Vector3(placedItem.transform.position.x, placedItem.transform.position.y, placedItem.transform.position.z), new Quaternion(0, 0, 0, 0));
+                placedItem.SetActive(false);
+            }
+        }
+        item = MB;
+    }
+
+
+    private void scanForParts()
+    {
+        mbEmpty = true;
+        for (int i = 0; i < MB.transform.childCount; i++)
+        {
+            if (MB.transform.GetChild(1).GetChild(i).gameObject.activeSelf && MB.transform.GetChild(1).GetChild(i).gameObject.tag == "item")
+            {
+                mbEmpty = false;
+            }
+        }
+    }
+    /* NOTES
+    * any boards that arent preceded by "mini" in their fitment can be assumed to have 4 RAM and 4 vc, making 12(0-11)children in all
+    * any mini boards will have only one vc and 2 RAM, making 7(0-6)children
+    */
 }
