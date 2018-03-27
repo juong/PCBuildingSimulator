@@ -78,13 +78,13 @@ public class Grab : MonoBehaviour
         {
             if (item.GetComponent<PartProperties>().placed)
             {
-                if(item.tag == "MB")
-                {
-                    disconnectAll();
-                }
                 placedItem = item;
                 item = Instantiate(item.GetComponent<PartProperties>().dupe);
-                //placedItem.SetActive(false);
+                if (item.name.StartsWith("ram") || item.name.StartsWith("video_card"))
+                {
+                    sort(item.name);
+                    placedItem.SetActive(false);
+                }
                 item.GetComponent<PartProperties>().target.SetActive(false);
             }
             item.GetComponent<Collider>().isTrigger = true;
@@ -105,8 +105,6 @@ public class Grab : MonoBehaviour
             item.GetComponent<Collider>().isTrigger = false;
             //Set the Gravity to true again.
             item.GetComponent<Rigidbody>().useGravity = true;
-            //Item is now no longer useful
-            //item = null;
             //Unparent our ball
             guide.GetChild(0).parent = null;
             handFree = true;
@@ -160,27 +158,12 @@ public class Grab : MonoBehaviour
         }
     }
 
-
-    private void disconnectAll()
-    {
-        for (int i = 0; i < MB.transform.childCount; i++)
-        {
-            if (MB.transform.GetChild(1).GetChild(i).gameObject.activeSelf && MB.transform.GetChild(1).GetChild(i).gameObject.tag == "item")
-            {
-                placedItem = MB.transform.GetChild(1).GetChild(i).gameObject;
-                item = Instantiate(placedItem.GetComponent<PartProperties>().dupe, new Vector3(placedItem.transform.position.x, placedItem.transform.position.y, placedItem.transform.position.z), new Quaternion(0, 0, 0, 0));
-                placedItem.SetActive(false);
-            }
-        }
-        item = MB;
-    }
-
-
     private void scanForParts()
     {
         mbEmpty = true;
-        for (int i = 0; i < MB.transform.childCount; i++)
+        for (int i = 0; i < MB.transform.GetChild(1).childCount; i++)
         {
+            Debug.Log(MB.transform.GetChild(1).GetChild(i).gameObject.name);
             if (MB.transform.GetChild(1).GetChild(i).gameObject.activeSelf && MB.transform.GetChild(1).GetChild(i).gameObject.tag == "item")
             {
                 mbEmpty = false;
