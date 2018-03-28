@@ -12,7 +12,8 @@ public class Grab : MonoBehaviour
 
     public float distance;
     float maxdist;
-    bool mbEmpty;
+    public bool mbEmpty;
+    bool removable = true;
 
     private GameObject placedItem; //only used if there we are pulling an item off
 
@@ -20,6 +21,8 @@ public class Grab : MonoBehaviour
     {
         if(MB)
             scanForParts();
+        //if ((col.name.StartsWith("p") || col.name.StartsWith("h")) && handFree)
+        //    checkPartForScrews();
         if (col.gameObject.tag == "item" || (col.gameObject.tag == "MB" && mbEmpty))
             if (!item)
                 item = col.gameObject;
@@ -74,7 +77,11 @@ public class Grab : MonoBehaviour
 
     private void pickup()
     {
-        if (item)
+        if(item && item.GetComponent<PartProperties>().placed && (item.name.StartsWith("p") || item.name.StartsWith("h")))
+        {
+            checkPartForScrews();
+        }
+        if (item && ((removable && item.tag == "item") || (mbEmpty && item.name.StartsWith("mb"))))
         {
             if (item.GetComponent<PartProperties>().placed)
             {
@@ -113,7 +120,7 @@ public class Grab : MonoBehaviour
 
     private void place()
     {
-        if (item && (item.name.StartsWith("mb") || MB))
+        if (item && (item.name.StartsWith("mb") || MB || (item.name.StartsWith("p") || (item.name.StartsWith("h")))))
         {
 
             if (item.name.StartsWith("ram") || item.name.StartsWith("video_card"))
@@ -163,13 +170,35 @@ public class Grab : MonoBehaviour
         mbEmpty = true;
         for (int i = 0; i < MB.transform.GetChild(1).childCount; i++)
         {
-            Debug.Log(MB.transform.GetChild(1).GetChild(i).gameObject.name);
             if (MB.transform.GetChild(1).GetChild(i).gameObject.activeSelf && MB.transform.GetChild(1).GetChild(i).gameObject.tag == "item")
             {
                 mbEmpty = false;
             }
         }
+        if (mbEmpty)
+        {
+            for (int i = 0; i < MB.transform.GetChild(2).childCount; i++)
+            {
+                if (!MB.transform.GetChild(2).GetChild(i).GetChild(1).gameObject.activeSelf)
+                {
+                    mbEmpty = false;
+                }
+            }
+        }
     }
+
+    private void checkPartForScrews()
+    {
+        removable = true;
+        for (int i = 0; i < item.transform.GetChild(0).childCount; i++)
+        {
+            if (!item.transform.GetChild(0).GetChild(i).GetChild(1).gameObject.activeSelf)
+            {
+                removable = false;
+            }
+        }
+    }
+
     /* NOTES
     * any boards that arent preceded by "mini" in their fitment can be assumed to have 4 RAM and 4 vc, making 12(0-11)children in all
     * any mini boards will have only one vc and 2 RAM, making 7(0-6)children
