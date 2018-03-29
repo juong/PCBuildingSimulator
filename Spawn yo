@@ -1,126 +1,156 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Spawn : MonoBehaviour {
-
-    public Transform spawnPos;
-    public GameObject spawnee;
-    public List<IPart> part = new List<IPart>();
-    PartFactory pFactory = new PartFactory();
-
-    private void Types()
-    {
-        part.Add(pFactory.GetPart(PartType.Motherboard));
-        part.Add(pFactory.GetPart(PartType.CPU));
-        part.Add(pFactory.GetPart(PartType.CPUFan));
-        part.Add(pFactory.GetPart(PartType.GPU));
-        part.Add(pFactory.GetPart(PartType.Storage));
-        part.Add(pFactory.GetPart(PartType.RAM));
-    }
-    //Use this for initialization
-    void Start()
-    {
-
-    }
-    void Spawnlmao()
-    {
-        Instantiate(spawnee, transform.position, Quaternion.identity);
-    }
-    // Update is called once per frame
-    void Update () {
-        if (Input.GetMouseButton(0))
-            Instantiate(spawnee, spawnPos.position, spawnPos.rotation);
-
-    }
-}
-
-// Partz
-public enum PartType
+public class Spawn : MonoBehaviour
 {
-    Motherboard,
-    CPU,
-    CPUFan,
-    GPU, 
-    Storage,
-    RAM
-}
-//The actual Factory
-public class PartFactory
-{
-    public IPart GetPart(PartType partType)
+    private int randy;
+    public Transform SpawnPoint;
+    public GameObject prefabM, prefabCPU, prefabCPUF, prefabGPU, prefabS, prefabRAM, prefabPSU;
+    public PartProperties propz;
+
+    private void RNG()
     {
-        switch (partType)
+        randy = Random.Range(1, 5);
+        if (randy == 1)
         {
-            case PartType.Motherboard:
-                return new Motherboard();
-            case PartType.CPU:
-                return new CPU();
-            case PartType.CPUFan:
-                return new CPUFan();
-            case PartType.GPU:
-                return new GPU();
-            case PartType.Storage:
-                return new Storage();
-            case PartType.RAM:
-                return new RAM();
-            default:
-                return new GPU();
+            propz.dead = true;
+        }
+        else
+        {
+            propz.dead = false;
         }
     }
-}
+    //EXPERIMENTAL Spawn Part Menu Method
+    public void SpawnPart(int lmao) {
+        Instantiate(prefabM, SpawnPoint.position, Quaternion.identity);
+    }
+    /*
+      The "if's" are purely for testing, whenever there are more buttons these will be implemented.
+      public void SpawnCPU() {
+        Instantiate(prefabCPU, SpawnPoint.position, Quaternion.identity);
+        propz = prefabCPU.GetComponent<PartProperties>();
+        propz.partName = "CPU";
+        propz.fitment = "All";
+        RNG();
+     }
+      public void SpawnCPUF() {
+        Instantiate(prefabCPUF, SpawnPoint.position, Quaternion.identity);
+        propz = prefabCPUF.GetComponent<PartProperties>();
+        propz.partName = "CPUFan";
+        propz.fitment = "All";
+        RNG();
+     }
+      public void SpawnGPU() {
+        Instantiate(prefabGPU, SpawnPoint.position, Quaternion.identity)
+        propz = prefabGPU.GetComponent<PartProperties>();
+        propz.partName = "GPU";
+        propz.fitment = "All";
+        RNG();
+     }
+      public void SpawnStorage() {
+        Instantiate(prefabS, SpawnPoint.position, Quaternion.identity);
+        propz = prefabS.GetComponent<PartProperties>();
+        propz.partName = "Storage";
+        propz.fitment = "All";
+        RNG();
+     }
+      public void SpawnRAM() {
+        Instantiate(prefabRAM, SpawnPoint.position, Quaternion.identity);
+        propz = prefabRAM.GetComponent<PartProperties>();
+        propz.partName = "RAM";
+        propz.fitment = "All";
+        RNG();
+     }
+      public void SpawnPSU() {
+        Instantiate(prefabPSU, SpawnPoint.position, Quaternion.identity);
+        propz = prefabPSU.GetComponent<PartProperties>();
+        propz.partName = "PSU";
+        propz.fitment = "All";
+        RNG();
+     }
+     */
 
-//Interface where parts inherit from
-public interface IPart
-{
-    void Attach();
-    void Name();
-    void Stats();
-    void Spawn();
-}
-
-//List of parts
-public class Motherboard : IPart
-{
-    public void Attach() { }
-    public void Name() { }
-    public void Stats() { }
-    public void Spawn() {
-    Instantiate(prefab, Transform.position, Quaternion.identity)
-            }
-}
-public class CPU : IPart
-{
-    public void Attach() { }
-    public void Name() { }
-    public void Stats() { }
-    public void Spawn() { }
-}
-public class CPUFan : IPart
-{
-    public void Attach() { }
-    public void Name() { }
-    public void Stats() { }
-    public void Spawn() { }
-}
-public class GPU : IPart
-{
-    public void Attach() { }
-    public void Name() { }
-    public void Stats() { }
-    public void Spawn() { }
-}
-public class Storage : IPart
-{
-    public void Attach() { }
-    public void Name() { }
-    public void Stats() { }
-    public void Spawn() { }
-}
-public class RAM : IPart
-{
-    public void Attach() { }
-    public void Name() { }
-    public void Stats() { }
-    public void Spawn() { }
+    /* Update is called once per frame
+    This is only used to test to see if it works. Will use something like the method above
+    */
+    void Update()
+    {
+        if (Input.GetKeyDown("1"))
+        {
+            Instantiate(prefabM, SpawnPoint.position, Quaternion.identity);
+            propz = prefabM.GetComponent<PartProperties>();
+            propz.partName = "Motherboard";
+            propz.fitment = "All";
+            propz.placed = false;
+            propz.isMB = true;
+            RNG();
+            propz.specs = randy + "gHz";
+        }
+        else if (Input.GetKeyDown("2"))
+        {
+            Instantiate(prefabCPU, SpawnPoint.position, Quaternion.identity);
+            propz = prefabCPU.GetComponent<PartProperties>();
+            propz.partName = "CPU";
+            propz.fitment = "All";
+            propz.placed = false;
+            propz.isMB = false;
+            RNG();
+            propz.specs = randy + "gHz";
+        }
+        else if (Input.GetKeyDown("3"))
+        {
+            Instantiate(prefabCPUF, SpawnPoint.position, Quaternion.identity);
+            propz = prefabCPUF.GetComponent<PartProperties>();
+            propz.partName = "CPUFan";
+            propz.fitment = "All";
+            propz.placed = false;
+            propz.isMB = false;
+            RNG();
+            propz.specs = randy + "gHz";
+        }
+        else if (Input.GetKeyDown("4"))
+        {
+            Instantiate(prefabGPU, SpawnPoint.position, Quaternion.identity);
+            propz = prefabGPU.GetComponent<PartProperties>();
+            propz.partName = "GPU";
+            propz.fitment = "All";
+            propz.placed = false;
+            propz.isMB = false;
+            RNG();
+            propz.specs = randy + "gHz";
+        }
+        else if (Input.GetKeyDown("5"))
+        {
+            Instantiate(prefabS, SpawnPoint.position, Quaternion.identity);
+            propz = prefabS.GetComponent<PartProperties>();
+            propz.partName = "Storage";
+            propz.fitment = "All";
+            propz.placed = false;
+            propz.isMB = false;
+            RNG();
+            propz.specs = randy + "gHz";
+        }
+        else if (Input.GetKeyDown("6"))
+        {
+            Instantiate(prefabRAM, SpawnPoint.position, Quaternion.identity);
+            propz = prefabRAM.GetComponent<PartProperties>();
+            propz.partName = "RAM";
+            propz.fitment = "All";
+            propz.placed = false;
+            propz.isMB = false;
+            RNG();
+            propz.specs = randy + "gHz";
+        }
+        else if (Input.GetKeyDown("7"))
+            Instantiate(prefabPSU, SpawnPoint.position, Quaternion.identity);
+        propz = prefabPSU.GetComponent<PartProperties>();
+        propz.partName = "PSU";
+        propz.fitment = "All";
+        propz.placed = false;
+        propz.isMB = false;
+        RNG();
+        propz.specs = randy + "gHz";
+    }
 }
