@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +6,9 @@ public class PartProperties : MonoBehaviour {
 
     //informational set these on instantiation
     public string partName;         //what kind of part is it? (cpu, cpuFan, vidCard, ram, periph, psu, or hdd)
+    public float posX;
+    public float posY;
+    public float posZ;
     public string fitment;      //ATX, NLX, MINI-ATX, if none in particular put "ALL"
     public GameObject target;
     public bool dead = false;

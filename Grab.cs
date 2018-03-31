@@ -37,6 +37,7 @@ public class Grab : MonoBehaviour
 
     void OnTriggerExit(Collider col)
     {
+        removable = true;
         if (col.gameObject.tag == "item" || col.gameObject.tag == "MB")
         {
             if (handFree)
@@ -58,7 +59,7 @@ public class Grab : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             if (!handFree)
-                if (distance < maxdist && (!item.GetComponent<PartProperties>().isMB))
+                if (distance < maxdist /*&& (!item.GetComponent<PartProperties>().isMB)*/)
                     place();
                 else
                     drop();
@@ -70,7 +71,7 @@ public class Grab : MonoBehaviour
         if (!handFree && item)
         {
             item.transform.position = guide.position;
-            if (!item.GetComponent<PartProperties>().isMB)
+            //if (!item.GetComponent<PartProperties>().isMB)
                 distance = Vector3.Distance(item.transform.position, item.GetComponent<PartProperties>().target.transform.position);
         }
     }
@@ -131,6 +132,7 @@ public class Grab : MonoBehaviour
             if (item.name.StartsWith("mb") && !MB)
             {
                 MB = item.GetComponent<PartProperties>().target.transform.GetChild(0).gameObject;
+                //item.GetComponent<PartProperties>().target.transform.GetChild(0).gameObject.SetActive(true);
             }
             Destroy(item);
             item = null;
