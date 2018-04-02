@@ -123,7 +123,8 @@ public class Grab : MonoBehaviour
     {
         if (item && (item.name.StartsWith("mb") || MB || (item.name.StartsWith("p") || (item.name.StartsWith("h")))))
         {
-
+            if(!item.name.StartsWith("mb") && !item.name.StartsWith("ram") && !item.name.StartsWith("v"))
+                item.GetComponent<PartProperties>().target.GetComponent<Renderer>().material.color = item.GetComponent<Renderer>().material.color;
             if (item.name.StartsWith("ram") || item.name.StartsWith("video_card"))
             {
                 sort(item.name);

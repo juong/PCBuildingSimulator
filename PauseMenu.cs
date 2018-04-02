@@ -81,6 +81,10 @@ public class PauseMenu : MonoBehaviour {
 
     public void SwitchHand()
     {
+        if (player.transform.GetChild(0).GetChild(0).GetChild(0).gameObject.activeSelf)
+        {
+            //player.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Grab>().drop();
+        }
         Transform t = player.transform.GetChild(0).GetChild(0);
         GameObject text = this.transform.GetChild(0).GetChild(5).GetChild(0).gameObject;
         bool switched = false;
@@ -100,6 +104,7 @@ public class PauseMenu : MonoBehaviour {
                     {
                         t.GetChild(0).gameObject.SetActive(true);
                         text.GetComponent<Text>().text = "Current tool: " + t.GetChild(0).gameObject.name;
+                        player.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Grab>().item = null;
                     }
                     switched = true;
                 }
