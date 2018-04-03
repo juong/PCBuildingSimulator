@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Xml.Serialization;
 using System.IO;
-using System;
 
 public class SaveLoadData : MonoBehaviour{
     public GameObject prefM, prefCPU, prefCPUF, prefGPU, prefS, prefRAM, prefPSU;
     public static PartCollection partCollection = new PartCollection();
+    //Loading in all game objects from the save text file
     public void Load(string path)
     {
         GameObject p;
@@ -21,22 +18,18 @@ public class SaveLoadData : MonoBehaviour{
         {
             if(part.partName == "Motherboard")
             {
-                Debug.Log("YAY1" + new Vector3(part.posX, part.posY, part.posZ));
                 p = Instantiate(prefM, new Vector3(part.posX, part.posY, part.posZ), Quaternion.identity);
             }
             else if (part.partName == "CPU")
             {
-                Debug.Log("YAY2" + new Vector3(part.posX, part.posY, part.posZ));
                 p = Instantiate(prefCPU, new Vector3(part.posX, part.posY, part.posZ), Quaternion.identity);
             }
             else if (part.partName == "CPUFan")
             {
-                Debug.Log("YAY3" + new Vector3(part.posX, part.posY, part.posZ));
                 p = Instantiate(prefCPUF, new Vector3(part.posX, part.posY, part.posZ), Quaternion.identity);
             }
             else if (part.partName == "GPU")
             {
-                Debug.Log("YAY4" + new Vector3(part.posX, part.posY, part.posZ));
                 p = Instantiate(prefGPU, new Vector3(part.posX, part.posY, part.posZ), Quaternion.identity);
             }
             else if (part.partName == "Storage")
@@ -46,17 +39,16 @@ public class SaveLoadData : MonoBehaviour{
             }
             else if (part.partName == "RAM")
             {
-                Debug.Log("YAY6" + new Vector3(part.posX, part.posY, part.posZ));
                 p = Instantiate(prefRAM, new Vector3(part.posX, part.posY, part.posZ), Quaternion.identity);
             }
             else
             {
-                Debug.Log("Yay7" + new Vector3(part.posX, part.posY, part.posZ));
                 p = Instantiate(prefPSU, new Vector3(part.posX, part.posY, part.posZ), Quaternion.identity);
             }
         }
     }
 
+    //Saving all item objects within the game with type 'PartProperties'
     public static void Save(string path, PartCollection parts)
     {
         var p = GameObject.FindObjectsOfType<PartProperties>();
@@ -73,16 +65,19 @@ public class SaveLoadData : MonoBehaviour{
         ClearParts();
     }
 
+    //Adds parts within the game to the data array
     public static void AddPartData(PartProperties properties)
     {
         partCollection.parts.Add(properties);
     }
 
+    //Clears the arraylist with all game data
     public static void ClearParts()
     {
         partCollection.parts.Clear();
     }
 
+    //Directly reading from text file and returning it to main load method
     private static PartCollection LoadParts(string path)
     {
         StreamReader reader = new StreamReader(path);
@@ -104,6 +99,7 @@ public class SaveLoadData : MonoBehaviour{
         return partCollection;
     }
 
+    //Directly writing data received into text file.
     private static void SaveParts(string path, PartCollection parts)
     {
         StreamWriter writer = new StreamWriter(path);
