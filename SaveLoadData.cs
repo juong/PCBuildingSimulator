@@ -34,7 +34,6 @@ public class SaveLoadData : MonoBehaviour{
             }
             else if (part.partName == "Storage")
             {
-                Debug.Log("YAY5" + new Vector3(part.posX, part.posY, part.posZ));
                 p = Instantiate(prefS, new Vector3(part.posX, part.posY, part.posZ), Quaternion.identity);
             }
             else if (part.partName == "RAM")
@@ -46,6 +45,7 @@ public class SaveLoadData : MonoBehaviour{
                 p = Instantiate(prefPSU, new Vector3(part.posX, part.posY, part.posZ), Quaternion.identity);
             }
         }
+        ClearParts();
     }
 
     //Saving all item objects within the game with type 'PartProperties'
@@ -58,7 +58,6 @@ public class SaveLoadData : MonoBehaviour{
             o.posX = ppos.x;
             o.posY = ppos.y;
             o.posZ = ppos.z;
-            Debug.Log(o.partName + " " + o.posX + " " + o.posY + " " + o.posZ);
             partCollection.parts.Add(o);
         }
         SaveParts(path, parts);
