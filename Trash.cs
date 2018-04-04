@@ -5,16 +5,9 @@ using UnityEngine;
 public class Trash : MonoBehaviour {
 
 
-
-	void Start () {
-		
-	}
-
-
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "item" || other.gameObject.tag == "tool")
+        if ((other.gameObject.tag == "item" && !other.name.StartsWith("Case")) || other.gameObject.tag == "tool" )
         {
             Destroy(other.gameObject);
         }

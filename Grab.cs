@@ -9,20 +9,19 @@ public class Grab : MonoBehaviour
     public Transform guide;
     public GameObject MB;
     GameObject parts;
+    GameObject caseParent;
 
     public float distance;
     float maxdist;
     public bool mbEmpty;
     bool removable = true;
 
-    private GameObject placedItem; //only used if there we are pulling an item off
+    private GameObject placedItem; //only used if we are pulling an item off
 
     void OnTriggerEnter(Collider col)
     {
         if(MB)
             scanForParts();
-        //if ((col.name.StartsWith("p") || col.name.StartsWith("h")) && handFree)
-        //    checkPartForScrews();
         if (col.gameObject.tag == "item" || (col.gameObject.tag == "MB" && mbEmpty))
             if (!item)
                 item = col.gameObject;
@@ -47,20 +46,24 @@ public class Grab : MonoBehaviour
 
     void Start()
     {
-
+        caseParent = GameObject.Find("CaseCover_placed");
+        GameObject.Find("CaseCover_placed").SetActive(false);
     }
 
     void Update()
     {
-        if (item && (item.name.StartsWith("mb") || item.name.StartsWith("hdd") || item.name.StartsWith("per") || item.name.StartsWith("psu")))
+        if (item && (item.name.StartsWith("mb") || item.name.StartsWith("hdd") || item.name.StartsWith("per") || item.name.StartsWith("psu") || item.name.StartsWith("Case")))
             maxdist = 0.6f;
         else
             maxdist = 0.3f;
         if (Input.GetMouseButtonDown(0))
         {
             if (!handFree)
-                if (distance < maxdist /*&& (!item.GetComponent<PartProperties>().isMB)*/)
-                    place();
+                if (distance < maxdist)
+                    if (item.name != "CaseCover")
+                        place();
+                    else
+                        closeCase();
                 else
                     drop();
             else
@@ -96,11 +99,12 @@ public class Grab : MonoBehaviour
                 item.GetComponent<PartProperties>().target.SetActive(false);
             }
             item.GetComponent<Collider>().isTrigger = true;
-            //Set the object parent to the guide empty object.
             item.transform.SetParent(guide);
-            //Set gravity to false while holding item
             item.GetComponent<Rigidbody>().useGravity = false;
-            //Re-position the ball on the guide object 
+            if (item.GetComponent<Rigidbody>())
+            {
+                item.GetComponent<Rigidbody>().freezeRotation = true;
+            }
             item.transform.position = guide.position;
             handFree = false;
         }
@@ -111,9 +115,8 @@ public class Grab : MonoBehaviour
         if (item)
         {
             item.GetComponent<Collider>().isTrigger = false;
-            //Set the Gravity to true again.
             item.GetComponent<Rigidbody>().useGravity = true;
-            //Unparent our ball
+            item.GetComponent<Rigidbody>().freezeRotation = false;
             guide.GetChild(0).parent = null;
             handFree = true;
         }
@@ -133,7 +136,6 @@ public class Grab : MonoBehaviour
             if (item.name.StartsWith("mb") && !MB)
             {
                 MB = item.GetComponent<PartProperties>().target.transform.GetChild(0).gameObject;
-                //item.GetComponent<PartProperties>().target.transform.GetChild(0).gameObject.SetActive(true);
             }
             Destroy(item);
             item = null;
@@ -202,8 +204,13 @@ public class Grab : MonoBehaviour
         }
     }
 
-    /* NOTES
-    * any boards that arent preceded by "mini" in their fitment can be assumed to have 4 RAM and 4 vc, making 12(0-11)children in all
-    * any mini boards will have only one vc and 2 RAM, making 7(0-6)children
-    */
+    private void closeCase()
+    {
+        caseParent.SetActive(true);
+        GameObject.FindGameObjectWithTag("case").GetComponent<Collider>().enabled = false;
+        GameObject.FindGameObjectWithTag("case").transform.SetParent(caseParent.transform);
+        GameObject tempItem = item;
+        drop();
+        Destroy(tempItem);
+    }
 }
