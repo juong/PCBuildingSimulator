@@ -51,5 +51,14 @@ public class PartProperties : MonoBehaviour {
             }
         }
     }
+    
+
+    void Update()
+    {
+        if (placed)
+        {
+            this.GetComponent<Collider>().enabled = GameObject.FindGameObjectWithTag("case").GetComponent<Collider>().enabled;
+        }
+    }
 
 }

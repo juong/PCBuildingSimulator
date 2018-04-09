@@ -37,6 +37,8 @@ public class MaterialChanger : MonoBehaviour {
             if (Input.GetMouseButtonDown(0))
             {
                 item.GetComponent<Renderer>().material.color = this.transform.GetChild(0).GetComponent<Renderer>().material.color;
+                if (item.name == "CaseCover_placed")
+                    item.transform.GetChild(0).GetComponent<Renderer>().material.color = this.transform.GetChild(0).GetComponent<Renderer>().material.color;
                 item = null;
             }else if (Input.GetMouseButtonDown(1))
             {

@@ -16,6 +16,7 @@ public class PaintSpawner : MonoBehaviour {
 	void Start () {
         spot = this.transform.position;
         spotX = this.transform.position.x;
+        newSet();
 	}
 
     public void newSet()

@@ -10,6 +10,7 @@ public class Grab : MonoBehaviour
     public GameObject MB;
     GameObject parts;
     GameObject caseParent;
+    GameObject tempItem;
 
     public float distance;
     float maxdist;
@@ -69,6 +70,11 @@ public class Grab : MonoBehaviour
             else
                 pickup();
         }
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (item.name == "CaseCover_placed" && handFree)
+                openCase();
+        }
 
 
         if (!handFree && item)
@@ -99,6 +105,7 @@ public class Grab : MonoBehaviour
                 item.GetComponent<PartProperties>().target.SetActive(false);
             }
             item.GetComponent<Collider>().isTrigger = true;
+            //item.GetComponent<Collider>().enabled = false;
             item.transform.SetParent(guide);
             item.GetComponent<Rigidbody>().useGravity = false;
             if (item.GetComponent<Rigidbody>())
@@ -206,11 +213,27 @@ public class Grab : MonoBehaviour
 
     private void closeCase()
     {
+        caseParent.GetComponent<Renderer>().material.color = item.GetComponent<Renderer>().material.color;
         caseParent.SetActive(true);
         GameObject.FindGameObjectWithTag("case").GetComponent<Collider>().enabled = false;
         GameObject.FindGameObjectWithTag("case").transform.SetParent(caseParent.transform);
-        GameObject tempItem = item;
+        tempItem = item;
         drop();
-        Destroy(tempItem);
+        tempItem.transform.position = new Vector3(caseParent.transform.position.x, caseParent.transform.position.y + 0.1f, caseParent.transform.position.z);
+        tempItem.transform.rotation = caseParent.transform.rotation;
+        tempItem.SetActive(false);
+        item = null;
+    }
+
+    private void openCase()
+    {
+        tempItem.GetComponent<Renderer>().material.color = caseParent.GetComponent<Renderer>().material.color;
+        GameObject.FindGameObjectWithTag("case").transform.SetParent(null);
+        GameObject.FindGameObjectWithTag("case").GetComponent<Collider>().enabled = true;
+        caseParent.SetActive(false);
+        tempItem.SetActive(true);
+        tempItem.transform.position = new Vector3(caseParent.transform.position.x, caseParent.transform.position.y + 0.1f, caseParent.transform.position.z);
+        tempItem.transform.rotation = caseParent.transform.rotation;
+        item = null;
     }
 }
