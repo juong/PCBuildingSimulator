@@ -37,21 +37,13 @@ public class Screwdriver : MonoBehaviour {
         }
     }
 
-    void Update () {
+    void Update() {
 
         scroll = Input.GetAxis("Mouse ScrollWheel");
 
-        if (item && !item.GetComponent<ScrewProperties>().sideways)
+        if (item)
         {
-            if (((item.transform.GetChild(1).gameObject.activeSelf && scroll < 0) || (item.transform.position.y <= item.GetComponent<ScrewProperties>().topDist && scroll > 0))/*&& !(item.transform.position.y >= item.GetComponent<ScrewProperties>().topDist && scroll < 0)*/)
-            {
-                item.transform.Rotate(0, 5 * Time.deltaTime * scroll, 0);
-                item.transform.Translate(0, 0.3f * Time.deltaTime * scroll, 0);
-            }
-        }
-        else if(item && item.GetComponent<ScrewProperties>().sideways)
-        {
-            if ((item.transform.localPosition.z >= item.GetComponent<ScrewProperties>().botDist && scroll < 0) || (item.transform.localPosition.z <= item.GetComponent<ScrewProperties>().topDist && scroll > 0))/*&& !(item.transform.position.y >= item.GetComponent<ScrewProperties>().topDist && scroll < 0)*/
+            if (scroll > 0 && !item.GetComponent<ScrewProperties>().maxHeight || !item.GetComponent<ScrewProperties>().fastened && scroll < 0)
             {
                 item.transform.Rotate(0, 5 * Time.deltaTime * scroll, 0);
                 item.transform.Translate(0, 0.3f * Time.deltaTime * scroll, 0);

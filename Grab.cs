@@ -11,6 +11,7 @@ public class Grab : MonoBehaviour
     GameObject parts;
     GameObject caseParent;
     GameObject tempItem;
+    Transform tO;
 
     public float distance;
     float maxdist;
@@ -21,11 +22,14 @@ public class Grab : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
+        
         if(MB)
             scanForParts();
         if (col.gameObject.tag == "item" || (col.gameObject.tag == "MB" && mbEmpty))
             if (!item)
                 item = col.gameObject;
+        if(item && item.GetComponent<PartProperties>().placed)
+            checkPartForScrews();
     }
 
     void OnTriggerStay(Collider col)
@@ -33,6 +37,8 @@ public class Grab : MonoBehaviour
         if (col.gameObject.tag == "item")
             if (!item)
                 item = col.gameObject;
+        if(item && item.GetComponent<PartProperties>().placed)
+            checkPartForScrews();
     }
 
     void OnTriggerExit(Collider col)
@@ -49,6 +55,7 @@ public class Grab : MonoBehaviour
     {
         caseParent = GameObject.Find("CaseCover_placed");
         GameObject.Find("CaseCover_placed").SetActive(false);
+        tO = GameObject.Find("TEST OBJECTS").transform;
     }
 
     void Update()
@@ -70,10 +77,11 @@ public class Grab : MonoBehaviour
             else
                 pickup();
         }
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && tempItem && item)
         {
-            if (item.name == "CaseCover_placed" && handFree)
-                openCase();
+			if(handFree)
+				if (item.name == "CaseCover_placed")
+					openCase();
         }
 
 
@@ -124,7 +132,7 @@ public class Grab : MonoBehaviour
             item.GetComponent<Collider>().isTrigger = false;
             item.GetComponent<Rigidbody>().useGravity = true;
             item.GetComponent<Rigidbody>().freezeRotation = false;
-            guide.GetChild(0).parent = null;
+            guide.GetChild(0).parent = tO;
             handFree = true;
         }
     }
@@ -187,6 +195,7 @@ public class Grab : MonoBehaviour
                 mbEmpty = false;
             }
         }
+        /*
         if (mbEmpty)
         {
             for (int i = 0; i < MB.transform.GetChild(2).childCount; i++)
@@ -197,6 +206,7 @@ public class Grab : MonoBehaviour
                 }
             }
         }
+        */
     }
 
     private void checkPartForScrews()
@@ -204,7 +214,7 @@ public class Grab : MonoBehaviour
         removable = true;
         for (int i = 0; i < item.transform.GetChild(0).childCount; i++)
         {
-            if (!item.transform.GetChild(0).GetChild(i).GetChild(1).gameObject.activeSelf)
+            if (!item.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).gameObject.activeSelf)
             {
                 removable = false;
             }

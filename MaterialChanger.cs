@@ -9,7 +9,7 @@ public class MaterialChanger : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (!item && (col.tag != "Player" && col.tag != "NotPaintable") && col.GetComponent<Renderer>().material.color != this.transform.GetChild(0).GetComponent<Renderer>().material.color && (!col.name.StartsWith("mb") && !col.name.StartsWith("ram") && !col.name.StartsWith("v")))
+        if (!item && col.GetComponent<Renderer>() && (col.tag != "Player" && col.tag != "NotPaintable") && col.GetComponent<Renderer>().material.color != this.transform.GetChild(0).GetComponent<Renderer>().material.color && (!col.name.StartsWith("mb") && !col.name.StartsWith("ram") && !col.name.StartsWith("v")))
         {
             item = col.gameObject;
             this.transform.GetChild(1).GetComponent<Renderer>().material.color = item.GetComponent<Renderer>().material.color;
@@ -18,7 +18,7 @@ public class MaterialChanger : MonoBehaviour {
 
     void OnTriggerStay(Collider col)
     {
-        if (!item && (col.tag != "Player" && col.tag != "NotPaintable") && col.GetComponent<Renderer>().material.color != this.transform.GetChild(0).GetComponent<Renderer>().material.color && (!col.name.StartsWith("mb") && !col.name.StartsWith("ram") && !col.name.StartsWith("v")))
+        if (!item && col.GetComponent<Renderer>() && (col.tag != "Player" && col.tag != "NotPaintable") && col.GetComponent<Renderer>().material.color != this.transform.GetChild(0).GetComponent<Renderer>().material.color && (!col.name.StartsWith("mb") && !col.name.StartsWith("ram") && !col.name.StartsWith("v")))
         {
             item = col.gameObject;
             this.transform.GetChild(1).GetComponent<Renderer>().material.color = item.GetComponent<Renderer>().material.color;
@@ -32,7 +32,7 @@ public class MaterialChanger : MonoBehaviour {
 	
 	
 	void Update () {
-        if (item)
+        if (item && item.GetComponent<Renderer>())
         {
             if (Input.GetMouseButtonDown(0))
             {

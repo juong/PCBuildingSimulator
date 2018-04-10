@@ -4,48 +4,24 @@ using UnityEngine;
 
 public class ScrewProperties : MonoBehaviour {
 
-    public float topDist;
-    public float botDist;
-
+    public int index;
+    public bool fastened;
+    public bool maxHeight;
+    GameObject targ;
     GameObject glow;
+    GameObject origin;
 
-    public bool sideways;
-
-	void Awake () {
+    void Awake () {
         glow = this.transform.GetChild(1).gameObject;
-        topDist = this.transform.position.y;
-        botDist = this.transform.position.y - 0.04f;
-        if (sideways)
-        {
-            topDist = this.transform.localPosition.z;
-            botDist = this.transform.localPosition.z - 0.002f;
-        }
-	}
+        targ = transform.parent.transform.GetChild(index).gameObject;
+        origin = transform.parent.transform.GetChild(index + 1).gameObject;
+    }
 
     private void Update()
     {
-        if (!sideways)
-        {
-            if (this.transform.position.y <= botDist)
-            {
-                glow.SetActive(false);
-            }
-            else
-            {
-                glow.SetActive(true);
-            }
-        }
-        else
-        {
-            if (this.transform.localPosition.z <= botDist)
-            {
-                glow.SetActive(false);
-            }
-            else
-            {
-                glow.SetActive(true);
-            }
-        }
+        fastened = Vector3.Distance(glow.transform.position, targ.transform.position) < 0.01f;
+        maxHeight = Vector3.Distance(glow.transform.position, origin.transform.position) < 0.01f;
+        glow.SetActive(!fastened);
     }
 
 }
