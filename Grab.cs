@@ -28,7 +28,7 @@ public class Grab : MonoBehaviour
         if (col.gameObject.tag == "item" || (col.gameObject.tag == "MB" && mbEmpty))
             if (!item)
                 item = col.gameObject;
-        if(item && item.GetComponent<PartProperties>().placed)
+        if(item && item.GetComponent<PartProperties>().placed && (item.name.Contains("mb") || item.name.Contains("psu") || item.name.Contains("hdd") || item.name.Contains("per")))
             checkPartForScrews();
     }
 
@@ -37,7 +37,7 @@ public class Grab : MonoBehaviour
         if (col.gameObject.tag == "item")
             if (!item)
                 item = col.gameObject;
-        if(item && item.GetComponent<PartProperties>().placed)
+        if(item && item.GetComponent<PartProperties>().placed && (item.name.Contains("mb") || item.name.Contains("psu") || item.name.Contains("hdd") || item.name.Contains("per")))
             checkPartForScrews();
     }
 
@@ -95,11 +95,11 @@ public class Grab : MonoBehaviour
 
     private void pickup()
     {
-        if(item && item.GetComponent<PartProperties>().placed && (item.name.StartsWith("p") || item.name.StartsWith("h")))
+        if(item && item.GetComponent<PartProperties>().placed && (item.name.StartsWith("p") || item.name.StartsWith("h") || item.name.Contains("mb")))
         {
             checkPartForScrews();
         }
-        if (item && ((removable && item.tag == "item") || (mbEmpty && item.name.StartsWith("mb"))))
+        if (item && ((removable && (item.tag == "item")) || (mbEmpty && item.name.StartsWith("mb") && removable)))
         {
             if (item.GetComponent<PartProperties>().placed)
             {
@@ -217,6 +217,7 @@ public class Grab : MonoBehaviour
             if (!item.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).gameObject.activeSelf)
             {
                 removable = false;
+                //Debug.Log(item.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).name);
             }
         }
     }
