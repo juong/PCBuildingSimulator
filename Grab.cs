@@ -125,7 +125,7 @@ public class Grab : MonoBehaviour
         }
     }
 
-    private void drop()
+    public void drop()
     {
         if (item)
         {
@@ -195,18 +195,6 @@ public class Grab : MonoBehaviour
                 mbEmpty = false;
             }
         }
-        /*
-        if (mbEmpty)
-        {
-            for (int i = 0; i < MB.transform.GetChild(2).childCount; i++)
-            {
-                if (!MB.transform.GetChild(2).GetChild(i).GetChild(1).gameObject.activeSelf)
-                {
-                    mbEmpty = false;
-                }
-            }
-        }
-        */
     }
 
     private void checkPartForScrews()

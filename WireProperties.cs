@@ -12,6 +12,7 @@ public class WireProperties : MonoBehaviour {
     GameObject finParent;
 
     public WiringScript parentScript;
+    public bool dynamic;
 	
     public void RemoveCable()
     {
@@ -24,24 +25,38 @@ public class WireProperties : MonoBehaviour {
 	void Update () {
         if (start && finish)
         {
-            if(!startParent || !finParent)
+            if (dynamic)
             {
-                startParent = start.transform.parent.gameObject;
-                finParent = finish.transform.parent.gameObject;
-                if (!start.name.Contains("PSU_to") && !start.name.Contains("MB_to_HDD"))
+                this.transform.position = (finish.transform.position + start.transform.position) / 2;
+                transform.LookAt(start.transform);
+                transform.localScale = (new Vector3(0.05f, 0.01f, Vector3.Distance(start.transform.position, finish.transform.position)));
+                if (Vector3.Distance(start.transform.position, finish.transform.position) > 10)
                 {
-                    start.SetActive(false);
+                    Destroy(this.gameObject);
                 }
-                if (!finish.name.Contains("PSU_to") && !finish.name.Contains("MB_to_HDD"))
-                {
-                    finish.SetActive(false);
-                }
-
             }
-            if (!startParent.activeSelf || !finParent.activeSelf)
+            else
             {
-                RemoveCable();
+                if (!startParent || !finParent)
+                {
+                    startParent = start.transform.parent.gameObject;
+                    finParent = finish.transform.parent.gameObject;
+                    if (!start.name.Contains("PSU_to") && !start.name.Contains("MB_to_HDD"))
+                    {
+                        start.SetActive(false);
+                    }
+                    if (!finish.name.Contains("PSU_to") && !finish.name.Contains("MB_to_HDD"))
+                    {
+                        finish.SetActive(false);
+                    }
+
+                }
+                if (!startParent.activeSelf || !finParent.activeSelf)
+                {
+                    RemoveCable();
+                }
             }
         }
-	}
+        
+    }
 }
