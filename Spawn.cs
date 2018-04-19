@@ -1,146 +1,119 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spawn : MonoBehaviour
 {
-
+    private int randy;
     public Transform SpawnPoint;
-    public GameObject prefabM, prefabCPU, prefabCPUF, prefabGPU, prefabS, prefabRAM;
+    public GameObject prefabM, prefabCPU, prefabCPUF, prefabGPU, prefabS, prefabRAM, prefabPSU;
+    public GameObject prefabMB, prefabCD, prefabKBD, prefabMOU;
+    public PartProperties propz;
 
-
-    public List<IPart> part = new List<IPart>();
-    PartFactory pFactory = new PartFactory();
-
-    private void Types()
+    private void RNG()
     {
-        part.Add(pFactory.GetPart(PartType.Motherboard));
-        part.Add(pFactory.GetPart(PartType.CPU));
-        part.Add(pFactory.GetPart(PartType.CPUFan));
-        part.Add(pFactory.GetPart(PartType.GPU));
-        part.Add(pFactory.GetPart(PartType.Storage));
-        part.Add(pFactory.GetPart(PartType.RAM));
-    }
-	
-	//EXPERIMENTAL Spawn Part Menu Method
-	public void SpawnPart(){
-		Instantiate(prefabM, SpawnPoint.position, Quaternion.identity);
-	}
-	
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown("1"))
-            Instantiate(prefabM, SpawnPoint.position, Quaternion.identity);
-        else if(Input.GetKeyDown("2"))
+        randy = Random.Range(1, 5);
+        if (randy == 1)
         {
-            Instantiate(prefabCPU, SpawnPoint.position, Quaternion.identity);
+            propz.dead = true;
         }
-        else if (Input.GetKeyDown("3"))
+        else
         {
-            Instantiate(prefabCPUF, SpawnPoint.position, Quaternion.identity);
-        }
-        else if (Input.GetKeyDown("4"))
-        {
-            Instantiate(prefabGPU, SpawnPoint.position, Quaternion.identity);
-        }
-        else if (Input.GetKeyDown("5"))
-        {
-            Instantiate(prefabS, SpawnPoint.position, Quaternion.identity);
-        }
-        else if (Input.GetKeyDown("6"))
-        {
-            Instantiate(prefabRAM, SpawnPoint.position, Quaternion.identity);
+            propz.dead = false;
         }
     }
-}
 
-
-
-// Partz
-public enum PartType
-{
-    Motherboard,
-    CPU,
-    CPUFan,
-    GPU,
-    Storage,
-    RAM
-}
-//The actual Factory
-public class PartFactory
-{
-    public IPart GetPart(PartType partType)
+    public void SpawnM()
     {
-        switch (partType)
-        {
-            case PartType.Motherboard:
-                return new Motherboard();
-            case PartType.CPU:
-                return new CPU();
-            case PartType.CPUFan:
-                return new CPUFan();
-            case PartType.GPU:
-                return new GPU();
-            case PartType.Storage:
-                return new Storage();
-            case PartType.RAM:
-                return new RAM();
-            default:
-                return new GPU();
-        }
+        Instantiate(prefabM, SpawnPoint.position, Quaternion.identity);
+        propz = prefabCPU.GetComponent<PartProperties>();
+        propz.partName = "Motherboard";
+        propz.fitment = "All";
+        RNG();
     }
-}
 
-//Interface where parts inherit from
-public interface IPart
-{
-    void Attach();
-    void Name();
-    void Stats();
-    void Spawn();
-}
+    public void SpawnCPU()
+    {
+        Instantiate(prefabCPU, SpawnPoint.position, Quaternion.identity);
+        propz = prefabCPU.GetComponent<PartProperties>();
+        propz.partName = "CPU";
+        propz.fitment = "All";
+        RNG();
+    }
 
-//List of parts
-public class Motherboard : IPart
-{
-    public void Attach() { }
-    public void Name() { }
-    public void Stats() { }
-    public void Spawn() { }
-}
-public class CPU : IPart
-{
-    public void Attach() { }
-    public void Name() { }
-    public void Stats() { }
-    public void Spawn() { }
-}
-public class CPUFan : IPart
-{
-    public void Attach() { }
-    public void Name() { }
-    public void Stats() { }
-    public void Spawn() { }
-}
-public class GPU : IPart
-{
-    public void Attach() { }
-    public void Name() { }
-    public void Stats() { }
-    public void Spawn() { }
-}
-public class Storage : IPart
-{
-    public void Attach() { }
-    public void Name() { }
-    public void Stats() { }
-    public void Spawn() { }
-}
-public class RAM : IPart
-{
-    public void Attach() { }
-    public void Name() { }
-    public void Stats() { }
-    public void Spawn() { }
+    public void SpawnCPUF()
+    {
+        Instantiate(prefabCPUF, SpawnPoint.position, Quaternion.identity);
+        propz = prefabCPUF.GetComponent<PartProperties>();
+        propz.partName = "CPUFan";
+        propz.fitment = "All";
+        RNG();
+    }
+
+    public void SpawnGPU()
+    {
+        Instantiate(prefabGPU, SpawnPoint.position, Quaternion.identity);
+        propz = prefabGPU.GetComponent<PartProperties>();
+        propz.partName = "GPU";
+        propz.fitment = "All";
+        RNG();
+    }
+
+    public void SpawnStorage()
+    {
+        Instantiate(prefabS, SpawnPoint.position, Quaternion.identity);
+        propz = prefabS.GetComponent<PartProperties>();
+        propz.partName = "Storage";
+        propz.fitment = "All";
+        RNG();
+    }
+    public void SpawnRAM()
+    {
+        Instantiate(prefabRAM, SpawnPoint.position, Quaternion.identity);
+        propz = prefabRAM.GetComponent<PartProperties>();
+        propz.partName = "RAM";
+        propz.fitment = "All";
+        RNG();
+    }
+    public void SpawnPSU()
+    {
+        Instantiate(prefabPSU, SpawnPoint.position, Quaternion.identity);
+        propz = prefabPSU.GetComponent<PartProperties>();
+        propz.partName = "PSU";
+        propz.fitment = "All";
+        RNG();
+    }
+    public void SpawnMB()
+    {
+        Instantiate(prefabMB, SpawnPoint.position, Quaternion.identity);
+        propz = prefabMB.GetComponent<PartProperties>();
+        propz.partName = "MB";
+        propz.fitment = "All";
+        RNG();
+    }
+    public void SpawnCD()
+    {
+        Instantiate(prefabCD, SpawnPoint.position, Quaternion.identity);
+        propz = prefabCD.GetComponent<PartProperties>();
+        propz.partName = "CDDrive";
+        propz.fitment = "All";
+        RNG();
+    }
+    public void SpawnKBD()
+    {
+        Instantiate(prefabKBD, SpawnPoint.position, Quaternion.identity);
+        propz = prefabKBD.GetComponent<PartProperties>();
+        propz.partName = "Keyboard";
+        propz.fitment = "All";
+        RNG();
+    }
+    public void SpawnMOU()
+    {
+        Instantiate(prefabMOU, SpawnPoint.position, Quaternion.identity);
+        propz = prefabMOU.GetComponent<PartProperties>();
+        propz.partName = "Mouse";
+        propz.fitment = "All";
+        RNG();
+    }
 }

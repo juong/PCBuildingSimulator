@@ -6,7 +6,7 @@ public class WiringScript : MonoBehaviour {
 
     GameObject item;
     public GameObject cable;
-    Color c;
+    //Color c;
     GameObject start;
     GameObject finish;
     public GameObject wireSource;
@@ -29,7 +29,7 @@ public class WiringScript : MonoBehaviour {
             if (col.transform.parent.name == "Wires")
             {
                 cable = col.gameObject;
-                c = cable.GetComponent<Renderer>().material.color;
+                //c = cable.GetComponent<Renderer>().material.color;
                 cable.GetComponent<Renderer>().material.color = Color.blue;
             }
         }
@@ -44,7 +44,7 @@ public class WiringScript : MonoBehaviour {
             if (col.transform.parent.name == "Wires")
             {
                 cable = col.gameObject;
-                c = cable.GetComponent<Renderer>().material.color;
+                //c = cable.GetComponent<Renderer>().material.color;
                 cable.GetComponent<Renderer>().material.color = Color.blue;
             }
         }
@@ -58,7 +58,7 @@ public class WiringScript : MonoBehaviour {
         {
             if (col.transform.parent.name == "Wires")
             {
-                cable.GetComponent<Renderer>().material.color = c;
+                col.GetComponent<Renderer>().material.color = Color.gray;
                 cable = null;
             }
         }
@@ -135,7 +135,18 @@ public class WiringScript : MonoBehaviour {
         if (start.name.Contains("CD_to_MB"))
             connect = item.name.Contains("MB_to_HDD");
 
-        if(item.name.Substring(1, item.name.Length - 3) == start.name.Substring(1, start.name.Length - 3))
+        if (item.name.Contains("HDD_to_PSU"))
+            connect = start.name.Contains("to_all");
+        if (start.name.Contains("HDD_to_PSU"))
+            connect = item.name.Contains("to_all");
+        if (item.name.Contains("CD_to_PSU"))
+            connect = start.name.Contains("to_all");
+        if (start.name.Contains("CD_to_PSU"))
+            connect = item.name.Contains("to_all");
+
+
+
+        if (item.name.Substring(1, item.name.Length - 3) == start.name.Substring(1, start.name.Length - 3))
             connect = false;
     }
     

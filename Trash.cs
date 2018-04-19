@@ -7,7 +7,7 @@ public class Trash : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((other.gameObject.tag == "item" && !other.name.StartsWith("Case")) || other.gameObject.tag == "tool" )
+        if (((other.gameObject.tag == "item" && !other.name.StartsWith("Case") && !other.name.Contains("notepad")) || other.gameObject.tag == "tool" ) && other.transform.parent.name != "Hand")
         {
             Destroy(other.gameObject);
         }

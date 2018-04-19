@@ -16,7 +16,6 @@ public class DynamicWire : MonoBehaviour {
     GameObject mb;
     public GameObject outlet;
     public GameObject selectedMonitor;
-    public GameObject menu;
 
     void OnTriggerEnter(Collider col)
     {
@@ -59,6 +58,7 @@ public class DynamicWire : MonoBehaviour {
             wireChild.GetComponent<WireProperties>().start = monitor.transform.GetChild(2).gameObject;
             wireChild.GetComponent<WireProperties>().finish = mb.transform.GetChild(4).gameObject;
             wireChild.name = "DisplayCable";
+            wireChild.transform.parent = psu.transform.parent.GetChild(7);
         }
     }
 
@@ -72,6 +72,7 @@ public class DynamicWire : MonoBehaviour {
             wireChild.GetComponent<WireProperties>().start = outlet.transform.GetChild(1).gameObject;
             wireChild.GetComponent<WireProperties>().finish = psu.transform.GetChild(2).gameObject;
             wireChild.name = "PSUPowerCable";
+            wireChild.transform.parent = psu.transform.parent.GetChild(7);
         }
     }
 
@@ -83,6 +84,7 @@ public class DynamicWire : MonoBehaviour {
         wireChild.GetComponent<WireProperties>().start = outlet;
         wireChild.GetComponent<WireProperties>().finish = monitor.transform.GetChild(2).gameObject;
         wireChild.name = "MonPowerCable";
+        wireChild.transform.parent = psu.transform.parent.GetChild(7);
     }
 
     void Update () {

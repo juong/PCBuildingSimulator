@@ -29,10 +29,54 @@ public class SpawnMenu : MonoBehaviour {
 		Cursor.visible = true;
 	}
 	
-	public void Spawn()
+	public void PlayerMenu()
 	{
-		spawner.SpawnPart();
+		spawnMenuUI.SetActive(false); 
 		playerMenuUI.SetActive(true);
-		spawnMenuUI.SetActive(false);
 	}
+	
+	
+	public void SpawnCPU() {
+		spawner.SpawnCPU();
+	}
+	
+	public void SpawnCPUF() {
+		spawner.SpawnCPUF();
+	}
+	
+	public void SpawnGPU() {
+		spawner.SpawnGPU();
+	}
+	
+	public void SpawnStorage() {
+		spawner.SpawnStorage();
+	}
+	
+	public void SpawnRAM() {
+		spawner.SpawnRAM();
+	}
+	
+	public void SpawnPSU() {
+		spawner.SpawnPSU();
+	}
+
+    public void SpawnMB()
+    {
+        spawner.SpawnMB();
+    }
+
+    public void SpawnCD()
+    {
+        spawner.SpawnCD();
+    }
+
+    public void SpawnKBD()
+    {
+        spawner.SpawnKBD();
+    }
+
+    public void SpawnMOU()
+    {
+        spawner.SpawnMOU();
+    }
 }

@@ -12,6 +12,7 @@ public class Grab : MonoBehaviour
     GameObject caseParent;
     GameObject tempItem;
     Transform tO;
+    public GameObject simMenu;
 
     public float distance;
     float maxdist;
@@ -56,6 +57,7 @@ public class Grab : MonoBehaviour
         caseParent = GameObject.Find("CaseCover_placed");
         GameObject.Find("CaseCover_placed").SetActive(false);
         tO = GameObject.Find("TEST OBJECTS").transform;
+        //simMenu = GameObject.Find("Simulator State Menu");
     }
 
     void Update()
@@ -64,7 +66,7 @@ public class Grab : MonoBehaviour
             maxdist = 0.6f;
         else
             maxdist = 0.3f;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !simMenu.activeSelf)
         {
             if (!handFree)
                 if (distance < maxdist)
@@ -132,7 +134,8 @@ public class Grab : MonoBehaviour
             item.GetComponent<Collider>().isTrigger = false;
             item.GetComponent<Rigidbody>().useGravity = true;
             item.GetComponent<Rigidbody>().freezeRotation = false;
-            guide.GetChild(0).parent = tO;
+            if(!item.name.Contains("Paint"))
+                guide.GetChild(0).parent = tO;
             handFree = true;
         }
     }
