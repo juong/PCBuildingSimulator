@@ -23,6 +23,7 @@ public class PartProperties : MonoBehaviour {
 
     public bool placed = false;
     public GameObject dupe;
+    GameObject TO;
 
     public bool isMB = false;
 
@@ -50,6 +51,7 @@ public class PartProperties : MonoBehaviour {
                 target = GameObject.FindGameObjectWithTag("case").transform.GetChild(5).gameObject;
             }
         }
+        TO = GameObject.Find("TEST OBJECTS");
     }
     
 
@@ -59,6 +61,8 @@ public class PartProperties : MonoBehaviour {
         {
             this.GetComponent<Collider>().enabled = GameObject.FindGameObjectWithTag("case").GetComponent<Collider>().enabled;
         }
+        if (this.transform.parent == null && (!this.name.Contains("paint") && this.name != "LocalSpawn"))
+            this.transform.parent = TO.transform;
     }
 
 }
