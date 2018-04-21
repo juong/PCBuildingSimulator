@@ -17,6 +17,9 @@ public class DynamicWire : MonoBehaviour {
     public GameObject outlet;
     public GameObject selectedMonitor;
 
+    public AudioClip click;
+    AudioSource a;
+
     void OnTriggerEnter(Collider col)
     {
         if (!outlet && col.tag == "Outlet")
@@ -46,12 +49,14 @@ public class DynamicWire : MonoBehaviour {
         monitor = GameObject.Find("monitor");
         psu = GameObject.Find("pc_tower_el_mierde").transform.GetChild(1).gameObject;
         mb = GameObject.Find("pc_tower_el_mierde").transform.GetChild(0).gameObject;
+        a = GetComponent<AudioSource>();
     }
 
     void MonitorToPC()
     {
         if (mb.activeSelf)
         {
+            a.PlayOneShot(click);
             wireChild = Instantiate(wirePrefab);
             wireChild.GetComponent<WireProperties>().dynamic = true;
             wireChild.GetComponent<Renderer>().material.color = Color.black;
@@ -66,6 +71,7 @@ public class DynamicWire : MonoBehaviour {
     {
         if (psu.activeSelf)
         {
+            a.PlayOneShot(click);
             wireChild = Instantiate(wirePrefab);
             wireChild.GetComponent<WireProperties>().dynamic = true;
             wireChild.GetComponent<Renderer>().material.color = Color.black;
@@ -78,6 +84,7 @@ public class DynamicWire : MonoBehaviour {
 
     public void PowerWireToMonitor()
     {
+        a.PlayOneShot(click);
         wireChild = Instantiate(wirePrefab);
         wireChild.GetComponent<WireProperties>().dynamic = true;
         wireChild.GetComponent<Renderer>().material.color = Color.black;

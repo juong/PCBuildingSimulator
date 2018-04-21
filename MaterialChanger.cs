@@ -5,7 +5,8 @@ using UnityEngine;
 public class MaterialChanger : MonoBehaviour {
 
     public GameObject item;
-
+    public AudioClip spray;
+    AudioSource a;
 
     void OnTriggerEnter(Collider col)
     {
@@ -30,12 +31,17 @@ public class MaterialChanger : MonoBehaviour {
         item = null;
     }
 	
+    void Awake()
+    {
+        a = GetComponent<AudioSource>();
+    }
 	
 	void Update () {
         if (item && item.GetComponent<Renderer>())
         {
             if (Input.GetMouseButtonDown(0))
             {
+                a.PlayOneShot(spray);
                 item.GetComponent<Renderer>().material.color = this.transform.GetChild(0).GetComponent<Renderer>().material.color;
                 if (item.name == "CaseCover_placed")
                     item.transform.GetChild(0).GetComponent<Renderer>().material.color = this.transform.GetChild(0).GetComponent<Renderer>().material.color;

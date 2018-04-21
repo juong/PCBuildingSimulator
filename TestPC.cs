@@ -19,11 +19,14 @@ public class TestPC : MonoBehaviour {
     int vcCount = 0;
     GameObject testMenu;
     bool checking = false;
+    public AudioClip click;
+    AudioSource a;
 
 	void Start () {
         pc = GameObject.Find("pc_tower_el_mierde");
         player = GameObject.FindGameObjectWithTag("Player");
         testMenu = GameObject.Find("Simulator Menus").transform.GetChild(1).gameObject;
+        a = GetComponent<AudioSource>();
 	}
 	
 	void Update () {
@@ -37,7 +40,10 @@ public class TestPC : MonoBehaviour {
             this.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.blue;
         }
         if (inRange && Input.GetKeyDown(KeyCode.F))
+        {
+            a.PlayOneShot(click);
             this.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.blue;
+        }
         if(inRange && Input.GetKeyUp(KeyCode.F) && !checking)
         {
             checking = true;

@@ -20,6 +20,9 @@ public class WiringScript : MonoBehaviour {
     bool dupe = false;
     bool connect = false;
 
+    public AudioClip click;
+    AudioSource a;
+
     void OnTriggerEnter(Collider col)
     {
         if (!item && col.tag == "CableAnchor")
@@ -153,6 +156,7 @@ public class WiringScript : MonoBehaviour {
 
     void Awake () {
         index = new ArrayList();
+        a = GetComponent<AudioSource>();
         wireParent = GameObject.FindGameObjectWithTag("case").transform.GetChild(6).gameObject;
 	}
 	
@@ -162,6 +166,7 @@ public class WiringScript : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             if (item) {
+                a.PlayOneShot(click);
                 if (firstSet)
                 {
                     finish = item;
@@ -188,6 +193,7 @@ public class WiringScript : MonoBehaviour {
         {
             if (cable)
             {
+                a.PlayOneShot(click);
                 //DisconnectAll(item.name.Substring(0, 3));
                 cable.GetComponent<WireProperties>().RemoveCable();
             }

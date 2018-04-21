@@ -19,6 +19,9 @@ public class Grab : MonoBehaviour
     public bool mbEmpty;
     bool removable = true;
 
+    public AudioClip placeNoise;
+    AudioSource audioSource;
+
     private GameObject placedItem; //only used if we are pulling an item off
 
     void OnTriggerEnter(Collider col)
@@ -57,6 +60,7 @@ public class Grab : MonoBehaviour
         caseParent = GameObject.Find("CaseCover_placed");
         GameObject.Find("CaseCover_placed").SetActive(false);
         tO = GameObject.Find("TEST OBJECTS").transform;
+        audioSource = GetComponent<AudioSource>();
         //simMenu = GameObject.Find("Simulator State Menu");
     }
 
@@ -97,6 +101,7 @@ public class Grab : MonoBehaviour
 
     private void pickup()
     {
+        
         if(item && item.GetComponent<PartProperties>().placed && (item.name.StartsWith("p") || item.name.StartsWith("h") || item.name.Contains("mb")))
         {
             checkPartForScrews();
@@ -144,7 +149,8 @@ public class Grab : MonoBehaviour
     {
         if (item && (item.name.StartsWith("mb") || MB || (item.name.StartsWith("p") || (item.name.StartsWith("h")))))
         {
-            if(!item.name.StartsWith("mb") && !item.name.StartsWith("ram") && !item.name.StartsWith("v"))
+            audioSource.PlayOneShot(placeNoise);
+            if (!item.name.StartsWith("mb") && !item.name.StartsWith("ram") && !item.name.StartsWith("v"))
                 item.GetComponent<PartProperties>().target.GetComponent<Renderer>().material.color = item.GetComponent<Renderer>().material.color;
             if (item.name.StartsWith("ram") || item.name.StartsWith("video_card"))
             {
