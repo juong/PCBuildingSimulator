@@ -52,5 +52,10 @@ public class MainMenuCam : MonoBehaviour {
             this.transform.RotateAround(guide.transform.position, guide.transform.position, 0.1f);
             transform.Rotate(rotationSpeed);
         }
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
 	}
 }

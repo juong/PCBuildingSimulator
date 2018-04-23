@@ -7,15 +7,17 @@ using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour {
 
 	public static bool SimulationIsPaused = false;
-    public static string partPath = "Prefabs";
+    public static string partPath;
+    public static string casePath;
     public GameObject pauseMenuUI;
+	public GameObject playerMenuUI;
 
     GameObject player;
     float camX, camY; //used for storing default values
 
     // Update is called once per frame
     void Update () {
-		if (Input.GetKeyDown(KeyCode.Escape))
+		if (Input.GetKeyDown(KeyCode.Escape) && !playerMenuUI.activeSelf)
 		{
 			if ( SimulationIsPaused )
 			{
@@ -42,8 +44,8 @@ public class PauseMenu : MonoBehaviour {
 	{
 		pauseMenuUI.SetActive(true);
 		Time.timeScale = 0f;
-        camX = player.GetComponent<PlayerControls>().camSpeedX;
-        camY = player.GetComponent<PlayerControls>().camSpeedY;
+        camX = 2;
+        camY = 5;
         player.GetComponent<PlayerControls>().camSpeedX = 0;
         player.GetComponent<PlayerControls>().camSpeedY = 0;
         SimulationIsPaused = true;
@@ -53,24 +55,24 @@ public class PauseMenu : MonoBehaviour {
 
     void Awake()
     {
+        casePath = System.IO.Path.Combine(Application.dataPath, "Resources/case.txt");
         partPath = System.IO.Path.Combine(Application.dataPath, "Resources/parts.txt");
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
     public void Save()
     {
-        Debug.Log("Hi");
-        SaveLoadData.Save(partPath, SaveLoadData.partCollection);
+        SaveLoadData.Save(partPath, casePath, SaveLoadData.partCollection);
     }
 
     public void Load()
     {
-        Debug.Log(partPath);
-        this.transform.GetChild(0).GetChild(2).GetChild(1).gameObject.GetComponent<SaveLoadData>().Load(partPath);
+        this.transform.GetChild(0).GetChild(2).GetChild(1).gameObject.GetComponent<SaveLoadData>().Load(partPath, casePath);
     }
 
     public void LoadMenu()
 	{
+        Resume();
 		SceneManager.LoadScene("Menu");
 	}
 	
@@ -81,10 +83,6 @@ public class PauseMenu : MonoBehaviour {
 
     public void SwitchHand()
     {
-        if (player.transform.GetChild(0).GetChild(0).GetChild(0).gameObject.activeSelf)
-        {
-            //player.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Grab>().drop();
-        }
         Transform t = player.transform.GetChild(0).GetChild(0);
         GameObject text = this.transform.GetChild(0).GetChild(5).GetChild(0).gameObject;
         bool switched = false;
