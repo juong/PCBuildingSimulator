@@ -8,9 +8,9 @@ public class NetScript : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "item")
-            other.transform.position = point.transform.position;
         if (other.tag == "Player")
             Application.Quit();
+        else
+            other.transform.position = point.transform.position;
     }
 }
