@@ -54,13 +54,16 @@ public class SaveLoadData : MonoBehaviour{
         }
         else
         {
+            s = reader.ReadLine();
+            char[] delimiter1 = { ' ' };
+            string[] fields = s.Split(delimiter1);
+            parentp.transform.Find("CaseCover_placed").position = new Vector3(float.Parse(fields[0]), float.Parse(fields[1]), float.Parse(fields[2]));
             parentp.transform.Find("CaseCover").gameObject.SetActive(true);
             b.transform.SetParent(parentp.transform);
             parentp.transform.Find("CaseCover").SetParent(parentp.transform);
             parentp.transform.Find("CaseCover_placed").gameObject.SetActive(false);
             s = reader.ReadLine();
-            char[] delimiter1 = { ' ' };
-            string[] fields = s.Split(delimiter1);
+            fields = s.Split(delimiter1);
             b.transform.position = new Vector3(float.Parse(fields[0]), float.Parse(fields[1]), float.Parse(fields[2]));
             s = reader.ReadLine();
             fields = s.Split(delimiter1);
@@ -154,6 +157,7 @@ public class SaveLoadData : MonoBehaviour{
     //Saving all item objects within the game with type 'PartProperties'
     public static void Save(string path, string casePath, PartCollection parts)
     {
+        GameObject parentp = GameObject.Find("TEST OBJECTS");
         GameObject ccase = GameObject.Find("pc_tower_el_mierde");
         GameObject coverp = GameObject.Find("CaseCover_placed");
         GameObject cover = GameObject.Find("CaseCover");
@@ -167,6 +171,7 @@ public class SaveLoadData : MonoBehaviour{
         else
         {
             writer.WriteLine(false);
+            writer.WriteLine(parentp.transform.Find("CaseCover_placed").position.x + " " + parentp.transform.Find("CaseCover_placed").position.y + " " + parentp.transform.Find("CaseCover_placed").position.z);
             writer.WriteLine(ccase.transform.position.x + " " + ccase.transform.position.y + " " + ccase.transform.position.z);
             writer.WriteLine(cover.transform.position.x + " " + cover.transform.position.y + " " + cover.transform.position.z);
         }
